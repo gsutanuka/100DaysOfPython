@@ -1,0 +1,6 @@
+friends = ["Alice", "Bob", "Charlie", "David", "Emanuel"]
+
+import random
+friend_index = random.randint(0, len(friends)-1)
+payer = friends[friend_index]
+print(payer)
