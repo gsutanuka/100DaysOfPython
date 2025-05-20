@@ -1,64 +1,16 @@
 import random
-stages = [r'''
-  +---+
-  |   |
-  O   |
- /|\  |
- / \  |
-      |
-=========
-''', r'''
-  +---+
-  |   |
-  O   |
- /|\  |
- /    |
-      |
-=========
-''', r'''
-  +---+
-  |   |
-  O   |
- /|\  |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|   |
-      |
-      |
-=========''', '''
-  +---+
-  |   |
-  O   |
-  |   |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
-      |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-      |
-      |
-      |
-      |
-=========
-''']
-word_list = ["aardvark", "baboon", "camel"]
+import hangman_words
+import hangman_art
 
-# TODO-1: - Create a variable called 'lives' to keep track of the number of lives left.
-#  Set 'lives' to equal 6.
+# TODO-1: - Update the word list to use the 'word_list' from hangman_words.py
+
+lives = 6
+word_list = hangman_words.word_list
+
+# TODO-3: - Import the logo from hangman_art.py and print it at the start of the game.
+
+logo = hangman_art.logo
+print(logo)
 
 chosen_word = random.choice(word_list)
 print(chosen_word)
@@ -67,14 +19,17 @@ placeholder = ""
 word_length = len(chosen_word)
 for position in range(word_length):
     placeholder += "_"
-print(placeholder)
+print("Word to guess: " + placeholder)
 
 game_over = False
 correct_letters = []
 lives = 6
+guessed_letters = []
 while not game_over:
-    guess = input("Guess a letter: ").lower()
 
+    # TODO-6: - Update the code below to tell the user how many lives they have left.
+    print(f"****************************{lives}/6 LIVES LEFT****************************")
+    guess = input("Guess a letter: ").lower()
     display = ""
 
     for letter in chosen_word:
@@ -86,22 +41,32 @@ while not game_over:
         else:
             display += "_"
 
-    print(display)
+    print("Word to guess: " + display)
+    # TODO-4: - If the user has entered a letter they've already guessed, print the letter and let them know.
+    # TODO-5: - If the letter is not in the chosen_word, print out the letter and let them know it's not in the word.
+    #  e.g. You guessed d, that's not in the word. You lose a life.
+    if guess in guessed_letters:
+        print(f"You guessed {guess} again, try another letter.")
 
-    # TODO-2: - If guess is not a letter in the chosen_word, Then reduce 'lives' by 1.
-    #  If lives goes down to 0 then the game should stop and it should print "You lose."
+    if (guess not in chosen_word and guess not in guessed_letters) or (guess not in chosen_word and len(guessed_letters) == 0):
+        lives -= 1
+        print(f"You guessed {guess}, that's not in the word. You lose a life.")
+
+    guessed_letters.append(guess)
+
+
+    if lives == 0:
+        game_over = True
+        print(f"***********************YOU LOSE**********************")
+        print(f"The correct word was {chosen_word}.")
+
+    # TODO 7: - Update the print statement below to give the user the correct word they were trying to guess.
+
 
     if "_" not in display:
         game_over = True
-        print("Congratulations! You win.")
+        print("****************************YOU WIN****************************")
 
-    if guess not in chosen_word:
-        lives -= 1
-        if lives == 0:
-            print("You lose! GAME OVER!")
-            game_over = True
-
-    # TODO-3: - print the ASCII art from 'stages'
-    #  that corresponds to the current number of 'lives' the user has remaining.
-
+    # TODO-2: - Update the code below to use the stages List from the file hangman_art.py
+    stages = hangman_art.stages
     print(stages[lives])
