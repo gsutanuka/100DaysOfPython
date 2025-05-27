@@ -1,0 +1,27 @@
+def bidding(bid_dict):
+    user_name = input("What's your name? ")
+    user_bid = int(input("What's your bid? $"))
+    bid_dict[user_name] = user_bid
+    return bid_dict
+
+bidding_dict = {}
+game_over = False
+repeat = "yes"
+
+while not game_over:
+    if repeat == "yes":
+        bidding(bidding_dict)
+        repeat = input("Do you want to go again?\n1.Yes\n2.No\n").lower()
+        print("\n"*500)
+    else:
+        game_over = True
+
+
+
+bid_list = list(bidding_dict.values())
+max_bid = max(bidding_dict.values())
+max_bid_index = bid_list.index(max_bid)
+
+max_bid_name = list(bidding_dict.keys())[max_bid_index]
+
+print(f"The winner is {max_bid_name} with a bid of ${max_bid}.")
